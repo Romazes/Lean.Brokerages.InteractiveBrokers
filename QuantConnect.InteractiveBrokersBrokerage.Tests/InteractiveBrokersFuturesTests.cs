@@ -13,14 +13,14 @@
  * limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using IBApi;
+using System;
+using System.Linq;
 using NUnit.Framework;
-using QuantConnect.Algorithm;
-using QuantConnect.Brokerages.InteractiveBrokers;
 using QuantConnect.Logging;
+using QuantConnect.Algorithm;
+using System.Collections.Generic;
+using QuantConnect.Brokerages.InteractiveBrokers;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {
@@ -33,7 +33,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         {
             var symbolMapper = new InteractiveBrokersSymbolMapper(TestGlobals.MapFileProvider);
 
-            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider()))
+            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider()))
             {
                 ib.Connect();
                 Assert.IsTrue(ib.IsConnected);
@@ -309,7 +309,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         [Test]
         public void CreateExpectedFutureContractsWithDifferentCurrencies()
         {
-            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider()))
+            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider()))
             {
                 ib.Connect();
                 Assert.IsTrue(ib.IsConnected);

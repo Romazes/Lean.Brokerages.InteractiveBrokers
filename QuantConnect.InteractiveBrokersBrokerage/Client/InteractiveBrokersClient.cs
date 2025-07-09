@@ -251,10 +251,10 @@ namespace QuantConnect.Brokerages.InteractiveBrokers.Client
         /// <param name="tickerId">The request's unique identifier.</param>
         /// <param name="field">Specifies the type of price.</param>
         /// <param name="price">The actual price.</param>
-        /// <param name="attribs">Tick attributes.</param>
-        public override void tickPrice(int tickerId, int field, double price, TickAttrib attribs)
+        /// <param name="attributes">Tick attributes.</param>
+        public override void tickPrice(int tickerId, int field, double price, TickAttrib attributes)
         {
-            OnTickPrice(new TickPriceEventArgs(tickerId, field, price, attribs));
+            OnTickPrice(new TickPriceEventArgs(tickerId, field, price, attributes));
         }
 
         /// <summary>

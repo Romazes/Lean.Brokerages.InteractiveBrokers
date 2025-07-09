@@ -14,11 +14,11 @@
 */
 
 using NUnit.Framework;
-using QuantConnect.Algorithm;
-using QuantConnect.Brokerages.InteractiveBrokers;
-using QuantConnect.Interfaces;
-using QuantConnect.Packets;
 using QuantConnect.Util;
+using QuantConnect.Packets;
+using QuantConnect.Algorithm;
+using QuantConnect.Interfaces;
+using QuantConnect.Brokerages.InteractiveBrokers;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {
@@ -31,11 +31,11 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         public void InitializesInstanceFromComposer()
         {
             var composer = Composer.Instance;
-            using (var factory = composer.Single<IBrokerageFactory>(instance => instance.BrokerageType == typeof (InteractiveBrokersBrokerage)))
+            using (var factory = composer.Single<IBrokerageFactory>(instance => instance.BrokerageType == typeof(InteractiveBrokersBrokerage)))
             {
                 Assert.IsNotNull(factory);
 
-                var job = new LiveNodePacket {BrokerageData = factory.BrokerageData};
+                var job = new LiveNodePacket { BrokerageData = factory.BrokerageData };
                 using (var brokerage = factory.CreateBrokerage(job, AlgorithmDependency))
                 {
                     Assert.IsNotNull(brokerage);

@@ -13,9 +13,9 @@
  * limitations under the License.
 */
 
-using QuantConnect.Securities.Future;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using QuantConnect.Securities.Future;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {

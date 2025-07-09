@@ -13,34 +13,34 @@
  * limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using IBApi;
+using System;
 using NodaTime;
+using System.Linq;
 using NUnit.Framework;
+using System.Threading;
+using QuantConnect.Data;
+using QuantConnect.Util;
+using System.Reflection;
+using System.Diagnostics;
+using QuantConnect.Python;
+using QuantConnect.Orders;
+using QuantConnect.Logging;
+using System.Globalization;
+using System.Threading.Tasks;
 using QuantConnect.Algorithm;
 using QuantConnect.Brokerages;
-using QuantConnect.Brokerages.InteractiveBrokers;
-using QuantConnect.Configuration;
-using QuantConnect.Data;
+using QuantConnect.Interfaces;
+using QuantConnect.Securities;
 using QuantConnect.Data.Market;
 using QuantConnect.IBAutomater;
-using QuantConnect.Interfaces;
-using QuantConnect.Lean.Engine.TransactionHandlers;
-using QuantConnect.Logging;
-using QuantConnect.Orders;
-using QuantConnect.Python;
-using QuantConnect.Securities;
 using QuantConnect.Tests.Engine;
-using QuantConnect.Tests.Engine.DataFeeds;
-using QuantConnect.Util;
+using QuantConnect.Configuration;
+using System.Collections.Generic;
 using Order = QuantConnect.Orders.Order;
+using QuantConnect.Tests.Engine.DataFeeds;
+using QuantConnect.Brokerages.InteractiveBrokers;
+using QuantConnect.Lean.Engine.TransactionHandlers;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {
@@ -74,7 +74,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 
             var exception = Assert.Throws<Exception>(() =>
             {
-                using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider, algo.Portfolio);
+                using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider);
             });
 
             StringAssert.Contains(ErrorCode.LoginFailed.ToString(), exception.Message);
@@ -92,7 +92,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         {
             var algo = new AlgorithmStub();
             var orderProvider = new OrderProvider();
-            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider, algo.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider);
             brokerage.Connect();
 
             var orders = CreateOrders(orderType, comboLimitPrice, comboDirection, callDirection, secondCallDirection, addUnderlying, securityType);
@@ -138,7 +138,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             var orderProvider = new OrderProvider();
             // wait for the previous run to finish, avoid any race condition
             Thread.Sleep(2000);
-            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider, algo.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider);
             brokerage.Connect();
 
             var openOrders = brokerage.GetOpenOrders();
@@ -211,7 +211,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             var orderProvider = new OrderProvider();
             // wait for the previous run to finish, avoid any race condition
             Thread.Sleep(2000);
-            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider, algo.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider);
             brokerage.Connect();
 
             var openOrders = brokerage.GetOpenOrders();
@@ -316,7 +316,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             var orderProvider = new OrderProvider();
             // wait for the previous run to finish, avoid any race condition
             Thread.Sleep(2000);
-            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider, algo.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algo, orderProvider);
             brokerage.Connect();
 
             var openOrders = brokerage.GetOpenOrders();
@@ -448,7 +448,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             Thread.Sleep(2000);
 
             var algorithm = new AlgorithmStub();
-            using var brokerage = new InteractiveBrokersBrokerage(algorithm, algorithm.Transactions, algorithm.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algorithm, algorithm.Transactions);
 
             var orderProcesor = new BrokerageTransactionHandler();
             orderProcesor.Initialize(algorithm, brokerage, new TestResultHandler());
@@ -507,7 +507,8 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
                 Assert.AreNotEqual(prevStopPrice, updatedStopPrice);
                 var orderCurrentStopPrice = ((TrailingStopOrder)algorithm.Transactions.GetOpenOrders().Single()).StopPrice;
                 Assert.AreEqual(updatedStopPrice, orderCurrentStopPrice);
-            };
+            }
+            ;
 
             Assert.IsTrue(stopPriceUpdated);
 
@@ -531,7 +532,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             Thread.Sleep(2000);
 
             var algorithm = new AlgorithmStub();
-            using var brokerage = new InteractiveBrokersBrokerage(algorithm, algorithm.Transactions, algorithm.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algorithm, algorithm.Transactions);
 
             var orderProcesor = new BrokerageTransactionHandler();
             orderProcesor.Initialize(algorithm, brokerage, new TestResultHandler());
@@ -621,7 +622,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             Thread.Sleep(2000);
 
             var algorithm = new AlgorithmStub();
-            using var brokerage = new InteractiveBrokersBrokerage(algorithm, algorithm.Transactions, algorithm.Portfolio);
+            using var brokerage = new InteractiveBrokersBrokerage(algorithm, algorithm.Transactions);
 
             var orderProcesor = new BrokerageTransactionHandler();
             orderProcesor.Initialize(algorithm, brokerage, new TestResultHandler());
@@ -1297,8 +1298,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 
             var brokerage = new InteractiveBrokersBrokerage(
                 new QCAlgorithm(),
-                new OrderProvider(_orders),
-                securityProvider);
+                new OrderProvider(_orders));
             brokerage.Connect();
 
             return brokerage;

@@ -13,22 +13,22 @@
  * limitations under the License.
 */
 
-using Newtonsoft.Json;
-using QuantConnect.Interfaces;
-using QuantConnect.Securities.Future;
-using QuantConnect.Securities.FutureOption;
-using IB = QuantConnect.Brokerages.InteractiveBrokers.Client;
+using IBApi;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using IBApi;
-using QuantConnect.Data.Auxiliary;
+using Newtonsoft.Json;
 using QuantConnect.Logging;
+using System.Globalization;
 using QuantConnect.Securities;
+using QuantConnect.Interfaces;
+using System.Collections.Generic;
+using QuantConnect.Data.Auxiliary;
+using QuantConnect.Securities.Future;
+using System.Text.RegularExpressions;
 using QuantConnect.Securities.IndexOption;
+using QuantConnect.Securities.FutureOption;
+using IB = QuantConnect.Brokerages.InteractiveBrokers.Client;
 
 namespace QuantConnect.Brokerages.InteractiveBrokers
 {

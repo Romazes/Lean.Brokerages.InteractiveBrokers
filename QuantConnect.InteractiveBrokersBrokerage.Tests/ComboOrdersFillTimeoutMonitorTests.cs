@@ -13,19 +13,16 @@
  * limitations under the License.
 */
 
-using System;
-using System.Collections.Concurrent;
-using System.Threading;
-
-using NUnit.Framework;
-
 using IBApi;
-
-using QuantConnect.Brokerages.InteractiveBrokers;
+using System;
+using NUnit.Framework;
+using System.Threading;
 using QuantConnect.Orders;
-using IB = QuantConnect.Brokerages.InteractiveBrokers.Client;
+using System.Collections.Concurrent;
 using Order = QuantConnect.Orders.Order;
 using QuantConnect.Lean.Engine.DataFeeds;
+using QuantConnect.Brokerages.InteractiveBrokers;
+using IB = QuantConnect.Brokerages.InteractiveBrokers.Client;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {
@@ -46,7 +43,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             _timeProvider = new(new DateTime(2023, 1, 6, 9, 30, 0));
             _monitor = new ComboOrdersFillTimeoutMonitor(_timeProvider, _timeout);
             _callbackCallsCount = 0;
-            _monitorCallbackCallTimes = new ();
+            _monitorCallbackCallTimes = new();
         }
 
         [Test]

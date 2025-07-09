@@ -14,9 +14,7 @@
 */
 
 using System;
-
 using NUnit.Framework;
-
 using QuantConnect.Brokerages.InteractiveBrokers;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers

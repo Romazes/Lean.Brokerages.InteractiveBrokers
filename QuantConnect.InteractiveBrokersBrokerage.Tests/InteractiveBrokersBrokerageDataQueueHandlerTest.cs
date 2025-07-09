@@ -14,17 +14,17 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
-using QuantConnect.Algorithm;
-using QuantConnect.Brokerages.InteractiveBrokers;
+using System.Threading;
 using QuantConnect.Data;
-using QuantConnect.Data.Market;
-using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
+using System.Threading.Tasks;
+using QuantConnect.Algorithm;
 using QuantConnect.Securities;
+using QuantConnect.Data.Market;
+using System.Collections.Generic;
+using QuantConnect.Brokerages.InteractiveBrokers;
+using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {
@@ -34,7 +34,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         [Test]
         public void FutureSubscriptions()
         {
-            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider()))
+            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider()))
             {
                 ib.Connect();
                 var gotEsData = false;
@@ -69,7 +69,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         [Test]
         public void GetsTickData()
         {
-            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider()))
+            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider()))
             {
                 ib.Connect();
                 var gotUsdData = false;
@@ -99,7 +99,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         [Test]
         public void GetsTickDataAfterDisconnectionConnectionCycle()
         {
-            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider()))
+            using (var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider()))
             {
                 ib.Connect();
                 var cancelationToken = new CancellationTokenSource();
@@ -167,7 +167,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             // Wait a bit to make sure previous tests already disconnected from IB
             Thread.Sleep(2000);
 
-            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider());
+            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider());
             ib.Connect();
 
             var cancelationToken = new CancellationTokenSource();
@@ -233,7 +233,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             // Wait a bit to make sure previous tests already disconnected from IB
             Thread.Sleep(2000);
 
-            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider());
+            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider());
             ib.Connect();
 
             var cancelationToken = new CancellationTokenSource();
@@ -287,7 +287,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
         [Test]
         public void CannotSubscribeToCFDWithUnsupportedMarket()
         {
-            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider());
+            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider());
             ib.Connect();
 
             var usSpx500Cfd = Symbol.Create("IBUS500", SecurityType.Cfd, Market.FXCM);
@@ -307,7 +307,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             // Wait a bit to make sure previous tests already disconnected from IB
             Thread.Sleep(2000);
 
-            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider());
+            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider());
             ib.Connect();
 
             var canonicalFuture = Symbol.Create(ticker, SecurityType.Future, Market.EUREX);
@@ -365,7 +365,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             // Wait a bit to make sure previous tests already disconnected from IB
             Thread.Sleep(2000);
 
-            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider(), new SecurityProvider());
+            using var ib = new InteractiveBrokersBrokerage(new QCAlgorithm(), new OrderProvider());
             ib.Connect();
 
             var index = Symbol.Create("SX5E", SecurityType.Index, Market.EUREX);

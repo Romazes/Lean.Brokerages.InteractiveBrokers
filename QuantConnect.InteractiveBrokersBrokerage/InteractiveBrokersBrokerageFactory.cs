@@ -14,13 +14,12 @@
 */
 
 using System;
-using System.Collections.Generic;
-using QuantConnect.Configuration;
-using QuantConnect.Data;
-using QuantConnect.Interfaces;
+using QuantConnect.Util;
 using QuantConnect.Packets;
 using QuantConnect.Securities;
-using QuantConnect.Util;
+using QuantConnect.Interfaces;
+using QuantConnect.Configuration;
+using System.Collections.Generic;
 
 namespace QuantConnect.Brokerages.InteractiveBrokers
 {
@@ -109,7 +108,6 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             var ib = new InteractiveBrokersBrokerage(
                 algorithm,
                 algorithm.Transactions,
-                algorithm.Portfolio,
                 account,
                 host,
                 port,

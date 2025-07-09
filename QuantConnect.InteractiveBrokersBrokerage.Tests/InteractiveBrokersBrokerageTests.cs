@@ -13,63 +13,37 @@
  * limitations under the License.
 */
 
+using System;
+using System.Linq;
 using NUnit.Framework;
-using QuantConnect.Algorithm;
-using QuantConnect.Brokerages.InteractiveBrokers;
-using QuantConnect.Data;
-using QuantConnect.Data.Market;
-using QuantConnect.Lean.Engine.DataFeeds;
-using QuantConnect.Logging;
+using System.Threading;
+using System.Diagnostics;
 using QuantConnect.Orders;
+using QuantConnect.Logging;
+using QuantConnect.Algorithm;
 using QuantConnect.Securities;
 using QuantConnect.Tests.Engine;
-using QuantConnect.Tests.Engine.BrokerageTransactionHandlerTests;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
+using QuantConnect.Brokerages.InteractiveBrokers;
+using QuantConnect.Tests.Engine.BrokerageTransactionHandlerTests;
 
 namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
     public class InteractiveBrokersBrokerageTests
     {
-        private readonly List<Order> _orders = new List<Order>();
+        private readonly List<Order> _orders = [];
         private InteractiveBrokersBrokerage _interactiveBrokersBrokerage;
         private const int buyQuantity = 100;
-        private const SecurityType Type = SecurityType.Forex;
 
         [SetUp]
         public void InitializeBrokerage()
         {
             Log.LogHandler = new NUnitLogHandler();
 
-            // grabs account info from configuration
-            var securityProvider = new SecurityProvider();
-            securityProvider[Symbols.USDJPY] = new Security(
-                SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork),
-                new SubscriptionDataConfig(
-                    typeof(TradeBar),
-                    Symbols.USDJPY,
-                    Resolution.Minute,
-                    TimeZones.NewYork,
-                    TimeZones.NewYork,
-                    false,
-                    false,
-                    false
-                ),
-                new Cash(Currencies.USD, 0, 1m),
-                SymbolProperties.GetDefault(Currencies.USD),
-                ErrorCurrencyConverter.Instance,
-                RegisteredSecurityDataTypesProvider.Null,
-                new SecurityCache()
-            );
-
             _interactiveBrokersBrokerage = new InteractiveBrokersBrokerage(
                 new QCAlgorithm(),
-                new OrderProvider(_orders),
-                securityProvider);
+                new OrderProvider(_orders));
             _interactiveBrokersBrokerage.Connect();
         }
 
