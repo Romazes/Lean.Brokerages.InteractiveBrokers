@@ -1712,29 +1712,21 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
             Assert.AreEqual(2, emittedCount, "Handler should emit again after throttle interval");
         }
 
-        [Test]
-        public void GetOutsideRegularTradingHoursComboWithFlagEmitsWarningOnce()
+        [TestCase(OrderType.Market, false, false)]
+        [TestCase(OrderType.Market, true, false)]
+        [TestCase(OrderType.Limit, true, true)]
+        [TestCase(OrderType.Limit, false, false)]
+        [TestCase(OrderType.ComboMarket, true, true)]
+        [TestCase(OrderType.ComboLimit, true, true)]
+        [TestCase(OrderType.ComboLegLimit, true, true)]
+        public void GetOutsideRegularTradingHoursFlagWithDifferentOrderTypes(OrderType orderType, bool orth, bool expected)
         {
             var brokerage = new InteractiveBrokersBrokerage();
-            var warnings = new List<BrokerageMessageEvent>();
-            brokerage.Message += (_, e) =>
-            {
-                if (e.Code == "ComboOrderOutsideRth")
-                {
-                    warnings.Add(e);
-                }
-            };
+            var ibOP = new InteractiveBrokersOrderProperties { OutsideRegularTradingHours = orth };
 
-            var flagged = new InteractiveBrokersOrderProperties { OutsideRegularTradingHours = true };
-            var unflagged = new InteractiveBrokersOrderProperties { OutsideRegularTradingHours = false };
+            var actual = brokerage.GetOutsideRegularTradingHours(orderType, ibOP);
 
-            brokerage.GetOutsideRegularTradingHours(OrderType.ComboLimit, flagged);
-            brokerage.GetOutsideRegularTradingHours(OrderType.ComboMarket, flagged);
-            brokerage.GetOutsideRegularTradingHours(OrderType.ComboLegLimit, flagged);
-            brokerage.GetOutsideRegularTradingHours(OrderType.Limit, flagged);
-            brokerage.GetOutsideRegularTradingHours(OrderType.ComboLimit, unflagged);
-
-            Assert.AreEqual(1, warnings.Count);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
